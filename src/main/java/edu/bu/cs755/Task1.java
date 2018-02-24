@@ -24,11 +24,13 @@ public class Task1 {
         ) throws IOException, InterruptedException {
             String line = value.toString();
             String[] fields = line.split(",");
+            /* Printlns for debugging
             for (String str : fields
                  ) {
                 System.out.println(str + "\n");
             }
             System.out.println(fields.length);
+            */
             if  (fields.length == 17) {
                 if (fields[6].equals("0.000000") || fields[7].equals("0.000000") || fields[8].equals("0.000000") || fields[9].equals("0.000000") || fields[6].equals("") || fields[7].equals("") || fields[8].equals("") || fields[9].equals("")) {
                     context.write(new Text(fields[2].substring(11, 13)), one);
