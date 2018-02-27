@@ -24,13 +24,7 @@ public class Task1 {
         ) throws IOException, InterruptedException {
             String line = value.toString();
             String[] fields = line.split(",");
-            /* Printlns for debugging
-            for (String str : fields
-                 ) {
-                System.out.println(str + "\n");
-            }
-            System.out.println(fields.length);
-            */
+            // if there are emptry or == 0 fields in the GPS coordinates (errors), write to the context the hour of the day and the value 1
             if  (fields.length == 17) {
                 if (fields[6].equals("0.000000") || fields[7].equals("0.000000") || fields[8].equals("0.000000") || fields[9].equals("0.000000") || fields[6].equals("") || fields[7].equals("") || fields[8].equals("") || fields[9].equals("")) {
                     context.write(new Text(fields[2].substring(11, 13)), one);
@@ -44,11 +38,13 @@ public class Task1 {
         public void reduce(Text key, Iterable<IntWritable> values,
                            Context context
         ) throws IOException, InterruptedException {
+            // sum the total number of errors per hour
             int sum = 0;
             for (IntWritable val : values) {
                 sum += val.get();
             }
             result.set(sum);
+            // write the hour and error sum to the context
             context.write(key, result);
         }
     }
